@@ -36,15 +36,15 @@ Herramientas de desarrollo que facilitan las pruebas e integración con DENA par
 
     | Entorno | URL |
     |---|---|
-    | **PRE** | [https://api-batera.pre.dena.eus/devtools-services/](https://api-batera.pre.dena.eus/devtools-services/) |
-    | **PRO** | [https://api-batera.pro.dena.eus/devtools-services/](https://api-batera.pro.dena.eus/devtools-services/) *(próximamente)* |
+    | **PRE** | [https://api.pre.dena.eus/devtools-services/](https://api.pre.dena.eus/devtools-services/) |
+    | **PRO** | [https://api.pro.dena.eus/devtools-services/](https://api.pro.dena.eus/devtools-services/) *(próximamente)* |
 
 === ":material-lan: Euskalsarea"
 
     | Entorno | URL |
     |---|---|
-    | **PRE** | [https://api-batera.pre.batera.euskalsarea.eus/devtools-services/](https://api-batera.pre.batera.euskalsarea.eus/devtools-services/) |
-    | **PRO** | [https://api-batera.pro.batera.euskalsarea.eus/devtools-services/](https://api-batera.pro.batera.euskalsarea.eus/devtools-services/) *(próximamente)* |
+    | **PRE** | [https://api.pre.batera.euskalsarea.eus/devtools-services/](https://api.pre.batera.euskalsarea.eus/devtools-services/) |
+    | **PRO** | [https://api.pro.batera.euskalsarea.eus/devtools-services/](https://api.pro.batera.euskalsarea.eus/devtools-services/) *(próximamente)* |
 
 ### Funcionalidades
 

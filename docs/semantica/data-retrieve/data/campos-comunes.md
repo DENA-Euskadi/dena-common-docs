@@ -169,13 +169,20 @@ Array de URLs que permiten acceder al objeto en la sede electrónica. Cada eleme
 
 | Tipo (`type`) | Objeto | Documento |
 |---------------|--------|-----------|
-| `administrativeServiceProcedureRecord` | Expediente | [expediente.md](./expediente.md) |
-| `administrativeNotice` | Notificación | [notificacion.md](./notificacion.md) |
-| `administrativeOfficialRegisterRecord` | Registro Oficial | [registro-oficial.md](./registro-oficial.md) |
+| `administrativeServiceProcedureRecord` | Expediente administrativo | [expediente.md](./expediente.md) |
+| `administrativeNotice` | Notificación administrativa | [notificacion.md](./notificacion.md) |
+| `administrativeLedger` | Libro de Registro (Ledger) | [libro-registro.md](./libro-registro.md) |
 | `oneOffPayment` | Pago único | [pago.md](./pago.md) |
-| `directDebitPayment` | Domiciliación | [pago.md](./pago.md) |
+| `directDebitPayment` | Domiciliación bancaria | [pago.md](./pago.md) |
 | `scheduleItem` | Cita | [cita.md](./cita.md) |
 | `personData` | Datos de persona | [persona.md](./persona.md) |
+| `personMedicalData` | Datos médicos | [datos-medicos.md](./datos-medicos.md) |
+| `personCredential` | Credencial | [credencial.md](./credencial.md) |
+| `personCredentialForBasqueLanguageDegree` | Acreditación de euskera | [credencial.md](./credencial.md) |
+| `economicBenefit` | Prestación económica | [prestacion-economica.md](./prestacion-economica.md) |
+| `administrativePersonRegister` | Inscripción en registro | [inscripcion-registro.md](./inscripcion-registro.md) |
+| `personEnrollment` | Matrícula | [matricula.md](./matricula.md) |
+| `personAcademicEnrollment` | Matrícula académica | [matricula.md](./matricula.md) |
 
 Ver también: [`DN00DataTypeEnum.java`]({{ repos.common_data_api_blob }}/denaCommonDataAPIModelClasses/src/main/java/dena/api/data/model/DN00DataTypeEnum.java) — enumerado con todos los tipos de datos disponibles.
 
@@ -202,7 +209,7 @@ Ver también: [`DN00DataTypeEnum.java`]({{ repos.common_data_api_blob }}/denaCom
 
 | Mock Factory | Repositorio |
 |--------------|-------------|
-| DN99DENATestMockObjFactoryForDENADataExchangedObjectBase | [Ver código]({{ repos.interop_test_blob }}/denaTestCommonDataClasses/src/main/java/dena/test/common/data/DN99DENATestMockObjFactoryForDENADataExchangedObjectBase.java) |
+| DN99DENATestMockObjFactoryForDENADataExchangedObjectBase | [Ver código]({{ repos.interop_test_blob }}/denaTestCommonDataClasses/src/main/java/dena/test/common/data/DN99DENATestMockObjFactoryForDENADataExchangedObjectBase.java) ⚠️ *Eliminado en v0.5.20 — la clase base `DN00DENADataExchangedObjectBase` sigue existiendo, pero esta factory de test ha sido retirada* |
 | DN99DENATestMockObjFactoryForStateWithDescriptionBase | [Ver código]({{ repos.interop_test_blob }}/denaTestCommonDataClasses/src/main/java/dena/test/common/data/DN99DENATestMockObjFactoryForStateWithDescriptionBase.java) |
 
 

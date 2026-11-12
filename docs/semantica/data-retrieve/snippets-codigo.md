@@ -27,13 +27,24 @@ public class RetrieveDataController {
 
         // Buscar datos según tipo
         List<Map<String, Object>> dataItems = switch (dataTypeId) {
-            case "RECORDS"     -> fetchRecords(personId);
-            case "NOTICES"     -> fetchNotices(personId);
-            case "REGISTER"    -> fetchRegistry(personId);
-            case "PAYMENTS"    -> fetchPayments(personId);
-            case "SCHEDULE"    -> fetchSchedule(personId);
-            case "PERSON_DATA" -> fetchPersonData(personId);
-            default            -> List.of();
+            case "ADMINISTRATIVE_RECORD"          -> fetchRecords(personId);
+            case "ADMINISTRATIVE_NOTICE"          -> fetchNotices(personId);
+            case "ADMINISTRATIVE_LEDGER"          -> fetchLedger(personId);
+            case "PAYMENT_ONE_OFF_PAYMENT"        -> fetchOneOffPayments(personId);
+            case "PAYMENT_DIRECT_DEBIT_PAYMENT"   -> fetchDirectDebits(personId);
+            case "SCHEDULE"                       -> fetchSchedule(personId);
+            case "PERSON_DATA"                    -> fetchPersonData(personId);
+            case "PERSON_CREDENTIAL"              -> fetchCredentials(personId);
+            case "PERSON_CREDENTIAL_FOR_BASQUE_LANGUAGE_DEGREE" -> fetchBasqueLanguageDegrees(personId);
+            case "ECONOMIC_BENEFIT"               -> fetchEconomicBenefits(personId);
+            case "ADMINISTRATIVE_PERSON_REGISTER" -> fetchPersonRegisters(personId);
+            case "ADMINISTRATIVE_PERSON_REGISTER_FOR_HOUSING_PEV" -> fetchHousingPEVRegisters(personId);
+            case "ADMINISTRATIVE_PERSON_REGISTER_FOR_LAST_WILL"   -> fetchLastWillRegisters(personId);
+            case "ADMINISTRATIVE_PERSON_REGISTER_FOR_REVISION_PEV" -> fetchRevisionPEVRegisters(personId);
+            case "PERSON_ENROLLMENT"              -> fetchEnrollments(personId);
+            case "PERSON_ACADEMIC_ENROLLMENT"     -> fetchAcademicEnrollments(personId);
+            case "PERSON_MEDICAL_DATA"            -> fetchMedicalData(personId);
+            default                               -> List.of();
         };
 
         // Construir response
@@ -53,7 +64,6 @@ public class RetrieveDataController {
     }
 
     private List<Map<String, Object>> fetchRecords(String personId) {
-        // Consultar expedientes de la persona en el sistema de la administración
         return List.of(
             Map.of(
                 "type", "administrativeServiceProcedureRecord",
@@ -67,11 +77,17 @@ public class RetrieveDataController {
                     "serviceNameByLanguage", Map.of("SPANISH", "Solicitud de licencia", "BASQUE", "Lizentzia eskaera"),
                     "originRef", Map.of("id", "PROC-LIC-001")
                 ),
-                "createdAt", "2024-03-15T10:30:00Z",
-                "state", Map.of(
-                    "stateCode", "IN_PROGRESS",
-                    "description", Map.of("SPANISH", "En tramitación", "BASQUE", "Izapidetzen")
-                )
+                "applicationData", Map.of("applicationDate", "2024-03-14T09:00:00Z"),
+                "recordData", Map.of(
+                    "createdAt", "2024-03-15T10:30:00Z",
+                    "lastModifiedAt", "2024-06-01T14:00:00Z",
+                    "state", Map.of(
+                        "stateCode", "IN_PROGRESS",
+                        "description", Map.of("SPANISH", "En tramitación", "BASQUE", "Izapidetzen")
+                    ),
+                    "interestedParty", Map.of("personId", personId, "displayName", "Ciudadano/a")
+                ),
+                "urls", List.of(Map.of("url", "https://sede.miadmin.eus/expediente/EXP-2024-00123", "language", "SPANISH", "tags", List.of("default")))
             )
         );
     }
@@ -95,13 +111,24 @@ app.MapPost("/api/retrieveData", async (HttpContext http) =>
 
     var dataItems = dataTypeId switch
     {
-        "RECORDS"     => GetRecords(personId),
-        "NOTICES"     => GetNotices(personId),
-        "REGISTER"    => GetRegistry(personId),
-        "PAYMENTS"    => GetPayments(personId),
-        "SCHEDULE"    => GetSchedule(personId),
-        "PERSON_DATA" => GetPersonData(personId),
-        _             => new List<object>()
+        "ADMINISTRATIVE_RECORD"          => GetRecords(personId),
+        "ADMINISTRATIVE_NOTICE"          => GetNotices(personId),
+        "ADMINISTRATIVE_LEDGER"          => GetLedger(personId),
+        "PAYMENT_ONE_OFF_PAYMENT"        => GetOneOffPayments(personId),
+        "PAYMENT_DIRECT_DEBIT_PAYMENT"   => GetDirectDebits(personId),
+        "SCHEDULE"                       => GetSchedule(personId),
+        "PERSON_DATA"                    => GetPersonData(personId),
+        "PERSON_CREDENTIAL"              => GetCredentials(personId),
+        "PERSON_CREDENTIAL_FOR_BASQUE_LANGUAGE_DEGREE" => GetBasqueLanguageDegrees(personId),
+        "ECONOMIC_BENEFIT"               => GetEconomicBenefits(personId),
+        "ADMINISTRATIVE_PERSON_REGISTER" => GetPersonRegisters(personId),
+        "ADMINISTRATIVE_PERSON_REGISTER_FOR_HOUSING_PEV" => GetHousingPEVRegisters(personId),
+        "ADMINISTRATIVE_PERSON_REGISTER_FOR_LAST_WILL"   => GetLastWillRegisters(personId),
+        "ADMINISTRATIVE_PERSON_REGISTER_FOR_REVISION_PEV" => GetRevisionPEVRegisters(personId),
+        "PERSON_ENROLLMENT"              => GetEnrollments(personId),
+        "PERSON_ACADEMIC_ENROLLMENT"     => GetAcademicEnrollments(personId),
+        "PERSON_MEDICAL_DATA"            => GetMedicalData(personId),
+        _                                => new List<object>()
     };
 
     return Results.Ok(new
@@ -140,12 +167,23 @@ async def retrieve_data(request: dict[str, Any]) -> dict[str, Any]:
     data_type_id = context["dataType"]["dataTypeId"]
 
     fetchers = {
-        "RECORDS": fetch_records,
-        "NOTICES": fetch_notices,
-        "REGISTER": fetch_registry,
-        "PAYMENTS": fetch_payments,
+        "ADMINISTRATIVE_RECORD": fetch_records,
+        "ADMINISTRATIVE_NOTICE": fetch_notices,
+        "ADMINISTRATIVE_LEDGER": fetch_ledger,
+        "PAYMENT_ONE_OFF_PAYMENT": fetch_one_off_payments,
+        "PAYMENT_DIRECT_DEBIT_PAYMENT": fetch_direct_debits,
         "SCHEDULE": fetch_schedule,
         "PERSON_DATA": fetch_person_data,
+        "PERSON_CREDENTIAL": fetch_credentials,
+        "PERSON_CREDENTIAL_FOR_BASQUE_LANGUAGE_DEGREE": fetch_basque_language_degrees,
+        "ECONOMIC_BENEFIT": fetch_economic_benefits,
+        "ADMINISTRATIVE_PERSON_REGISTER": fetch_person_registers,
+        "ADMINISTRATIVE_PERSON_REGISTER_FOR_HOUSING_PEV": fetch_housing_pev_registers,
+        "ADMINISTRATIVE_PERSON_REGISTER_FOR_LAST_WILL": fetch_last_will_registers,
+        "ADMINISTRATIVE_PERSON_REGISTER_FOR_REVISION_PEV": fetch_revision_pev_registers,
+        "PERSON_ENROLLMENT": fetch_enrollments,
+        "PERSON_ACADEMIC_ENROLLMENT": fetch_academic_enrollments,
+        "PERSON_MEDICAL_DATA": fetch_medical_data,
     }
 
     data_items = fetchers.get(data_type_id, lambda _: [])(person_id)
@@ -177,11 +215,17 @@ def fetch_records(person_id: str) -> list[dict]:
                 "serviceNameByLanguage": {"SPANISH": "Solicitud de licencia", "BASQUE": "Lizentzia eskaera"},
                 "originRef": {"id": "PROC-LIC-001"},
             },
-            "createdAt": "2024-03-15T10:30:00Z",
-            "state": {
-                "stateCode": "IN_PROGRESS",
-                "description": {"SPANISH": "En tramitación", "BASQUE": "Izapidetzen"},
+            "applicationData": {"applicationDate": "2024-03-14T09:00:00Z"},
+            "recordData": {
+                "createdAt": "2024-03-15T10:30:00Z",
+                "lastModifiedAt": "2024-06-01T14:00:00Z",
+                "state": {
+                    "stateCode": "IN_PROGRESS",
+                    "description": {"SPANISH": "En tramitación", "BASQUE": "Izapidetzen"},
+                },
+                "interestedParty": {"personId": person_id, "displayName": "Ciudadano/a"},
             },
+            "urls": [{"url": "https://sede.miadmin.eus/expediente/EXP-2024-00123", "language": "SPANISH", "tags": ["default"]}],
         }
     ]
 ```
@@ -201,12 +245,23 @@ app.post('/api/retrieveData', (req, res) => {
   const dataTypeId = context.dataType.dataTypeId;
 
   const fetchers = {
-    RECORDS: fetchRecords,
-    NOTICES: fetchNotices,
-    REGISTER: fetchRegistry,
-    PAYMENTS: fetchPayments,
+    ADMINISTRATIVE_RECORD: fetchRecords,
+    ADMINISTRATIVE_NOTICE: fetchNotices,
+    ADMINISTRATIVE_LEDGER: fetchLedger,
+    PAYMENT_ONE_OFF_PAYMENT: fetchOneOffPayments,
+    PAYMENT_DIRECT_DEBIT_PAYMENT: fetchDirectDebits,
     SCHEDULE: fetchSchedule,
     PERSON_DATA: fetchPersonData,
+    PERSON_CREDENTIAL: fetchCredentials,
+    PERSON_CREDENTIAL_FOR_BASQUE_LANGUAGE_DEGREE: fetchBasqueLanguageDegrees,
+    ECONOMIC_BENEFIT: fetchEconomicBenefits,
+    ADMINISTRATIVE_PERSON_REGISTER: fetchPersonRegisters,
+    ADMINISTRATIVE_PERSON_REGISTER_FOR_HOUSING_PEV: fetchHousingPEVRegisters,
+    ADMINISTRATIVE_PERSON_REGISTER_FOR_LAST_WILL: fetchLastWillRegisters,
+    ADMINISTRATIVE_PERSON_REGISTER_FOR_REVISION_PEV: fetchRevisionPEVRegisters,
+    PERSON_ENROLLMENT: fetchEnrollments,
+    PERSON_ACADEMIC_ENROLLMENT: fetchAcademicEnrollments,
+    PERSON_MEDICAL_DATA: fetchMedicalData,
   };
 
   const dataItems = (fetchers[dataTypeId] || (() => []))(personId);
@@ -238,11 +293,17 @@ function fetchRecords(personId) {
         serviceNameByLanguage: { SPANISH: 'Solicitud de licencia', BASQUE: 'Lizentzia eskaera' },
         originRef: { id: 'PROC-LIC-001' },
       },
-      createdAt: '2024-03-15T10:30:00Z',
-      state: {
-        stateCode: 'IN_PROGRESS',
-        description: { SPANISH: 'En tramitación', BASQUE: 'Izapidetzen' },
+      applicationData: { applicationDate: '2024-03-14T09:00:00Z' },
+      recordData: {
+        createdAt: '2024-03-15T10:30:00Z',
+        lastModifiedAt: '2024-06-01T14:00:00Z',
+        state: {
+          stateCode: 'IN_PROGRESS',
+          description: { SPANISH: 'En tramitación', BASQUE: 'Izapidetzen' },
+        },
+        interestedParty: { personId, displayName: 'Ciudadano/a' },
       },
+      urls: [{ url: 'https://sede.miadmin.eus/expediente/EXP-2024-00123', language: 'SPANISH', tags: ['default'] }],
     },
   ];
 }
@@ -266,13 +327,24 @@ Route::post('/api/retrieveData', function (Request $request) {
     $dataTypeId = $context['dataType']['dataTypeId'];
 
     $dataItems = match ($dataTypeId) {
-        'RECORDS'     => fetchRecords($personId),
-        'NOTICES'     => fetchNotices($personId),
-        'REGISTER'    => fetchRegistry($personId),
-        'PAYMENTS'    => fetchPayments($personId),
-        'SCHEDULE'    => fetchSchedule($personId),
-        'PERSON_DATA' => fetchPersonData($personId),
-        default       => [],
+        'ADMINISTRATIVE_RECORD'          => fetchRecords($personId),
+        'ADMINISTRATIVE_NOTICE'          => fetchNotices($personId),
+        'ADMINISTRATIVE_LEDGER'          => fetchLedger($personId),
+        'PAYMENT_ONE_OFF_PAYMENT'        => fetchOneOffPayments($personId),
+        'PAYMENT_DIRECT_DEBIT_PAYMENT'   => fetchDirectDebits($personId),
+        'SCHEDULE'                       => fetchSchedule($personId),
+        'PERSON_DATA'                    => fetchPersonData($personId),
+        'PERSON_CREDENTIAL'              => fetchCredentials($personId),
+        'PERSON_CREDENTIAL_FOR_BASQUE_LANGUAGE_DEGREE' => fetchBasqueLanguageDegrees($personId),
+        'ECONOMIC_BENEFIT'               => fetchEconomicBenefits($personId),
+        'ADMINISTRATIVE_PERSON_REGISTER' => fetchPersonRegisters($personId),
+        'ADMINISTRATIVE_PERSON_REGISTER_FOR_HOUSING_PEV' => fetchHousingPEVRegisters($personId),
+        'ADMINISTRATIVE_PERSON_REGISTER_FOR_LAST_WILL'   => fetchLastWillRegisters($personId),
+        'ADMINISTRATIVE_PERSON_REGISTER_FOR_REVISION_PEV' => fetchRevisionPEVRegisters($personId),
+        'PERSON_ENROLLMENT'              => fetchEnrollments($personId),
+        'PERSON_ACADEMIC_ENROLLMENT'     => fetchAcademicEnrollments($personId),
+        'PERSON_MEDICAL_DATA'            => fetchMedicalData($personId),
+        default                          => [],
     };
 
     return response()->json([
@@ -302,11 +374,17 @@ function fetchRecords(string $personId): array {
                 'serviceNameByLanguage' => ['SPANISH' => 'Solicitud de licencia', 'BASQUE' => 'Lizentzia eskaera'],
                 'originRef' => ['id' => 'PROC-LIC-001'],
             ],
-            'createdAt' => '2024-03-15T10:30:00Z',
-            'state' => [
-                'stateCode' => 'IN_PROGRESS',
-                'description' => ['SPANISH' => 'En tramitación', 'BASQUE' => 'Izapidetzen'],
+            'applicationData' => ['applicationDate' => '2024-03-14T09:00:00Z'],
+            'recordData' => [
+                'createdAt' => '2024-03-15T10:30:00Z',
+                'lastModifiedAt' => '2024-06-01T14:00:00Z',
+                'state' => [
+                    'stateCode' => 'IN_PROGRESS',
+                    'description' => ['SPANISH' => 'En tramitación', 'BASQUE' => 'Izapidetzen'],
+                ],
+                'interestedParty' => ['personId' => $personId, 'displayName' => 'Ciudadano/a'],
             ],
+            'urls' => [['url' => 'https://sede.miadmin.eus/expediente/EXP-2024-00123', 'language' => 'SPANISH', 'tags' => ['default']]],
         ],
     ];
 }

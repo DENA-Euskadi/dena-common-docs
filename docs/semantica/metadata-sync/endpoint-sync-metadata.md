@@ -60,6 +60,30 @@ Authorization: Bearer <token> (si OAuth está configurado)
 | `context` | [Context](../semantica-base/index.md)          | ✅          | Objeto de contexto de la petición, incluyendo messageType con valor `ADMIN_SYNC_METADATA` |
 | `data`    | [Data](#data)                                  | ✅          | Payload de la petición |
 
+### Valores de `ofType.id`
+
+El campo `ofType.id` acepta cualquiera de los tipos de dato disponibles:
+
+| Valor | Descripción |
+|-------|-------------|
+| `administrativeServiceProcedureRecord` | Expediente |
+| `administrativeNotice` | Notificación |
+| `administrativeLedger` | Libro de Registro |
+| `oneOffPayment` | Pago único |
+| `directDebitPayment` | Domiciliación |
+| `scheduleItem` | Cita |
+| `personData` | Datos de persona |
+| `personCredential` | Credencial |
+| `personCredentialForBasqueLanguageDegree` | Acreditación de euskera |
+| `economicBenefit` | Prestación económica |
+| `administrativePersonRegister` | Inscripción en registro |
+| `administrativePersonRegisterForHousingPEV` | Inscripción vivienda PEV |
+| `administrativePersonRegisterForLastWill` | Últimas voluntades |
+| `administrativePersonRegisterForRevisionPEV` | Revisión PEV |
+| `personEnrollment` | Matrícula |
+| `personAcademicEnrollment` | Matrícula académica |
+| `personMedicalData` | Datos médicos |
+
 
 ## Data
 

@@ -4,6 +4,32 @@ Historial de versiones de la documentación DENA.
 
 ---
 
+## v0.5.20 <small>— 2026-11-11</small> { #v0520 }
+
+!!! success "Actual"
+
+**Nuevos tipos de datos (v0.5.20):**
+
+- :material-plus: Libro de Registro (`administrativeLedger`) — reemplaza `administrativeOfficialRegisterRecord`
+- :material-plus: Credencial (`personCredential`, `personCredentialForBasqueLanguageDegree`)
+- :material-plus: Prestación económica (`economicBenefit`)
+- :material-plus: Inscripción en registro (`administrativePersonRegister`, `...ForHousingPEV`, `...ForLastWill`, `...ForRevisionPEV`)
+- :material-plus: Matrícula (`personEnrollment`, `personAcademicEnrollment`)
+- :material-plus: Datos médicos (`personMedicalData`)
+
+**Cambios en tipos existentes:**
+
+- :material-refresh: Expediente: `interested.partyId/partyName` → `recordData.interestedParty.personId/displayName`
+- :material-minus: Registro Oficial (`administrativeOfficialRegisterRecord`) — **eliminado**, ver migración en [registro-oficial.md](../semantica/data-retrieve/data/registro-oficial.md)
+
+**Actualizaciones de documentación:**
+
+- :material-refresh: Versión actualizada a 0.5.20 en todas las páginas
+- :material-refresh: URLs de repositorios actualizadas a `PUBLIC-v0.5.20`
+- :material-plus: 6 nuevas páginas de tipos de datos
+
+---
+
 ## v0.3.32 <small>— 2026-06-26</small> { #v0332 }
 
 !!! success "Actual"

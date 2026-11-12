@@ -30,7 +30,7 @@ flowchart LR
     EXP --> STATE["state<br/><i>stateCode · description</i>"]
     EXP --> DATES["createdAt · lastUpdatedAt<br/>applicationDate"]
     EXP --> REGNUMBER["regNumber"]
-    EXP --> INTERESTED["interested<br/><i>partyId · partyName</i>"]
+    EXP --> INTERESTED["interestedParty<br/><i>personId · displayName</i>"]
     EXP --> DESC["descriptionByLanguage"]
     EXP --> URLS["urls[]"]
 
@@ -93,9 +93,9 @@ flowchart LR
 | `state` | `Object` | ✅ | *(ver [`DN00AdministrativeServiceProcedureRecordState`]({{ repos.common_data_api_blob }}/denaCommonDataAPIAdministrativeServicesModelClasses/src/main/java/dena/api/data/model/administrativeservices/DN00AdministrativeServiceProcedureRecordState.java))* | Estado actual |
 | `state.stateCode` | `String` | ✅ | `"IN_PROGRESS"` | Código de estado |
 | `state.description` | `LanguageTexts` | ❌ | `{"SPANISH":"En tramitación"}` | Descripción multiidioma del estado |
-| `interested` | `Object` | ❌ | *(ver [`DN00AdministrativeServiceInterested`]({{ repos.common_data_api_blob }}/denaCommonDataAPIAdministrativeServicesModelClasses/src/main/java/dena/api/data/model/administrativeservices/DN00AdministrativeServiceInterested.java))* | Interesado en el expediente |
-| `interested.partyId` | `String` | ❌ | `"12345678A"` | NIF/DNI del interesado |
-| `interested.partyName` | `String` | ❌ | `"Juan García"` | Nombre del interesado |
+| `recordData.interestedParty` | `Object` | ❌ | *(ver [`DN00AdministrativeServiceInterestedParty`]({{ repos.common_data_api_blob }}/denaCommonDataAPIAdministrativeServicesModelClasses/src/main/java/dena/api/data/model/administrativeservices/DN00AdministrativeServiceInterestedParty.java))* | Parte interesada en el expediente |
+| `recordData.interestedParty.personId` | `String` | ❌ | `"12345678A"` | NIF/DNI del interesado |
+| `recordData.interestedParty.displayName` | `String` | ❌ | `"Juan García"` | Nombre visible del interesado |
 | `descriptionByLanguage` | `LanguageTexts` | ❌ | `{"SPANISH":"Licencia apertura"}` | Descripción del expediente |
 | `urls` | `Array` | ❌ (recomendado) | *(ver [campos-comunes.md](./campos-comunes.md) · [`DN00DENADataExchangedObjectBase`]({{ repos.common_data_api_blob }}/denaCommonDataAPIModelClasses/src/main/java/dena/api/data/model/DN00DENADataExchangedObjectBase.java))* | URLs de acceso a la sede electrónica |
 
@@ -133,10 +133,9 @@ flowchart LR
   "lastUpdatedAt": "2024-06-01T14:00:00Z",
   "applicationDate": "2024-03-14T09:00:00Z",
   "regNumber": "REG-2024-00123",
-  "interested": { "partyId": "12345678A", "partyName": "Juan García" },
-  "state": {
-    "stateCode": "IN_PROGRESS",
-    "description": { "SPANISH": "En tramitación", "BASQUE": "Izapidetzen" }
+  "recordData": {
+    "interestedParty": { "personId": "12345678A", "displayName": "Juan García" },
+    "state": { "stateCode": "IN_PROGRESS", "description": { "SPANISH": "En tramitación", "BASQUE": "Izapidetzen" } }
   },
   "descriptionByLanguage": { "SPANISH": "Expediente de licencia de apertura", "BASQUE": "Irekiera-lizentzia espedientea" },
   "urls": [
@@ -153,7 +152,7 @@ flowchart LR
 Los siguientes objetos referencian al expediente mediante `procedureRecord`:
 
 - Notificación (`administrativeNotice`)
-- Registro Oficial (`administrativeOfficialRegisterRecord`)
+- Libro de Registro (Ledger) — ver [libro-registro.md](./libro-registro.md)
 - Pago (`oneOffPayment`, `directDebitPayment`)
 
 > **Nota:** Las citas (`scheduleItem`) NO dependen de expedientes.

@@ -36,7 +36,7 @@ Este documento describe las reglas de validación, formatos esperados y restricc
 
 ### Formato ISO 8601 (campos `Instant`)
 
-Campos como `createdAt`, `lastUpdatedAt`, `issuedAt`, `readedAt`, `registeredAt`.
+Campos como `createdAt`, `lastUpdatedAt`, `issuedAt`, `readAt`, `registeredAt`.
 
 | Regla | Detalle |
 |-------|---------|
@@ -119,9 +119,9 @@ Campos como `dueDate`, `surchargedAt`, `paidAt`, `setAt`, `expiresAt`, `nextChar
 
 | Regla | Detalle |
 |-------|---------|
-| `readedAt` = `null` si `state` = `PENDING_TO_BE_READED_BY_DESTINATION` | No puede tener fecha de lectura si está pendiente |
-| `readedAt` ≠ `null` si `state` = `ACKNOWLEDGED_BY_DESTINATION` o `REJECTED_BY_DESTINATION` | Debe tener fecha de lectura si fue leída/rechazada |
-| `issuedAt` ≤ `readedAt` | La fecha de emisión no puede ser posterior a la de lectura |
+| `readAt` = `null` si `state` = `PENDING_TO_BE_READ_BY_DESTINATION` | No puede tener fecha de lectura si está pendiente |
+| `readAt` ≠ `null` si `state` = `ACKNOWLEDGED_BY_DESTINATION` o `REJECTED_BY_DESTINATION` | Debe tener fecha de lectura si fue leída/rechazada |
+| `issuedAt` ≤ `readAt` | La fecha de emisión no puede ser posterior a la de lectura |
 
 ### Pago único
 
@@ -179,19 +179,19 @@ Campos como `dueDate`, `surchargedAt`, `paidAt`, `setAt`, `expiresAt`, `nextChar
 | `issuedAt` | ✅ |
 | `state` | ✅ |
 | `actSubjectByLanguage` | ✅ |
-| `readedAt` | ❌ |
+| `readAt` | ❌ |
 | `urls` | ❌ (recomendado) |
 
-### Registro Oficial (`administrativeOfficialRegisterRecord`)
+### Libro de Registro (`administrativeLedger`)
 
 | Campo | Obligatorio |
 |-------|:-----------:|
 | `oid` | ✅ |
 | `id` | ✅ |
-| `procedureRecord` | ✅ |
 | `registeredAt` | ✅ |
-| `subjectByLanguage` | ✅ |
-| `state` | ✅ |
+| `entryDirection` | ✅ |
+| `entryDirection.stateCode` | ✅ |
+| `subjectByLanguage` | ❌ |
 | `urls` | ❌ (recomendado) |
 
 ### Pago único (`oneOffPayment`)
@@ -251,19 +251,80 @@ Campos como `dueDate`, `surchargedAt`, `paidAt`, `setAt`, `expiresAt`, `nextChar
 
 | Campo | Obligatorio |
 |-------|:-----------:|
+| `contactData` | ❌ |
+| `bankAccountData` | ❌ |
+| `urls` | ❌ (recomendado — incluye tel: y mailto:) |
+
+### Credencial (`personCredential`)
+
+| Campo | Obligatorio |
+|-------|:-----------:|
 | `oid` | ✅ |
 | `id` | ✅ |
-| `contactData` | ✅ |
-| `contactData.partyId` | ✅ |
-| `contactData.partyName` | ✅ |
-| `contactData.partySurName` | ✅ |
-| `contactData.birthDate` | ❌ |
-| `contactData.phone` | ❌ |
-| `contactData.email` | ❌ |
-| `contactData.contactLanguage` | ❌ |
-| `contactData.contactMode` | ❌ |
-| `addresses` | ❌ |
-| `bankDataCollection` | ❌ |
+| `state.stateCode` | ❌ |
+| `issuedAt` | ❌ |
+| `expiresAt` | ❌ |
+| `subjectByLanguage` | ❌ |
+| `urls` | ❌ (recomendado) |
+
+### Acreditación de euskera (`personCredentialForBasqueLanguageDegree`)
+
+| Campo | Obligatorio |
+|-------|:-----------:|
+| `oid` | ✅ |
+| `id` | ✅ |
+| `CEFRTier` | ✅ |
+| `state.stateCode` | ❌ |
+| `issuedAt` | ❌ |
+| `certifyingEntityByLanguage` | ❌ |
+| `urls` | ❌ (recomendado) |
+
+### Prestación económica (`economicBenefit`)
+
+| Campo | Obligatorio |
+|-------|:-----------:|
+| `oid` | ✅ |
+| `id` | ✅ |
+| `amount` | ❌ |
+| `state.stateCode` | ❌ |
+| `paymentOrderedAt` | ❌ |
+| `urls` | ❌ (recomendado) |
+
+### Inscripción en registro (`administrativePersonRegister*`)
+
+| Campo | Obligatorio |
+|-------|:-----------:|
+| `oid` | ✅ |
+| `id` | ✅ |
+| `state.stateCode` | ❌ |
+| `registeredAt` | ❌ |
+| `expiresAt` | ❌ |
+| `startDate` *(solo RevisionPEV)* | ❌ |
+| `endDate` *(solo RevisionPEV)* | ❌ |
+| `urls` | ❌ (recomendado) |
+
+### Matrícula (`personEnrollment` / `personAcademicEnrollment`)
+
+| Campo | Obligatorio |
+|-------|:-----------:|
+| `oid` | ✅ |
+| `id` | ✅ |
+| `state.stateCode` | ❌ |
+| `registeredAt` | ❌ |
+| `subjectByLanguage` | ❌ |
+| `institutionNameByLanguage` | ❌ |
+| `academicYear` *(solo academic)* | ❌ |
+| `levelByLanguage` *(solo academic)* | ❌ |
+| `urls` | ❌ (recomendado) |
+
+### Datos médicos (`personMedicalData`)
+
+| Campo | Obligatorio |
+|-------|:-----------:|
+| `medicalPassId` | ❌ |
+| `medicalInsuranceId` | ❌ |
+| `doctorFullName` | ❌ |
+| `urls` | ❌ (recomendado — incluye tel: y mailto:) |
 
 ---
 
@@ -274,6 +335,7 @@ Campos como `dueDate`, `surchargedAt`, `paidAt`, `setAt`, `expiresAt`, `nextChar
 | Fecha/hora (Instant) | ISO 8601 con zona | `2024-03-15T10:30:00Z` |
 | Fecha (LocalDate) | `YYYY-MM-DD` | `2024-06-30` |
 | Importe | Número con punto decimal | `45.50` |
+| Importe (Money) | Objeto `{amount, base, currency}` | `{"amount":50000,"base":"CENTS","currency":"EUR"}` |
 | Idioma | Enum string | `SPANISH`, `BASQUE`, `ENGLISH` |
 | URL | HTTPS válida | `https://sede.miadmin.eus/...` |
 | Identificador | String alfanumérico | `EXP-2024-00123` |
