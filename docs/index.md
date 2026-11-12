@@ -174,8 +174,8 @@ graph LR
 
     | Entorno | Internet | Euskalsarea |
     |---|---|---|
-    | **PRE** | `https://api.pre.dena.eus` | `https://api.pre.batera.euskalsarea.eus` |
-    | **PRO** | `https://api.pro.dena.eus` | `https://api.pro.batera.euskalsarea.eus` |
+    | **PRE** | `https://api-batera.pre.dena.eus` | `https://api-batera.pre.batera.euskalsarea.eus` |
+    | **PRO** | `https://api-batera.pro.dena.eus` | `https://api-batera.pro.batera.euskalsarea.eus` |
 
 !!! question "Soporte técnico"
     

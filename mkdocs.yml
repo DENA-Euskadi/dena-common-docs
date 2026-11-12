@@ -59,17 +59,11 @@ nav:
       - Tipos de Datos Disponibles:
           - Campos Comunes: semantica/data-retrieve/data/campos-comunes.md
           - Cita: semantica/data-retrieve/data/cita.md
-          - Credencial: semantica/data-retrieve/data/credencial.md
-          - Datos Médicos: semantica/data-retrieve/data/datos-medicos.md
           - Expediente: semantica/data-retrieve/data/expediente.md
-          - Inscripción en Registro: semantica/data-retrieve/data/inscripcion-registro.md
-          - Libro de Registro (Ledger): semantica/data-retrieve/data/libro-registro.md
-          - Matrícula: semantica/data-retrieve/data/matricula.md
           - Notificación: semantica/data-retrieve/data/notificacion.md
           - Pago: semantica/data-retrieve/data/pago.md
           - Persona: semantica/data-retrieve/data/persona.md
-          - Prestación Económica: semantica/data-retrieve/data/prestacion-economica.md
-          - Registro Oficial (obsoleto): semantica/data-retrieve/data/registro-oficial.md
+          - Registro Oficial: semantica/data-retrieve/data/registro-oficial.md
           - Servicio Administrativo: semantica/data-retrieve/data/servicio-administrativo.md
           - Unidad Orgánica: semantica/data-retrieve/data/unidad-organica.md
       - Modelos Base:

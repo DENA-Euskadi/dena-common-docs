@@ -23,10 +23,10 @@ Guía centralizada de errores comunes y su resolución, organizada por categorí
     curl -v http://localhost:8082/api/hello
 
     # Verificar conectividad de red
-    telnet api.pre.dena.eus 443
+    telnet api-batera.pre.dena.eus 443
 
     # Verificar resolución DNS
-    nslookup api.pre.dena.eus
+    nslookup api-batera.pre.dena.eus
     ```
 
 ??? failure "Connection timeout"
@@ -59,7 +59,7 @@ Guía centralizada de errores comunes y su resolución, organizada por categorí
 
     ```bash
     # Descargar el certificado
-    openssl s_client -connect api.pre.dena.eus:443 < /dev/null 2>/dev/null | \
+    openssl s_client -connect api-batera.pre.dena.eus:443 < /dev/null 2>/dev/null | \
       openssl x509 > dena-ca.crt
 
     # Importar al truststore

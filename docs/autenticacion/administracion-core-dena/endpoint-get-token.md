@@ -3,10 +3,7 @@
 ## Endpoint
 
 ```
-POST /auth/realms/DenaAuthAdmins/protocol/openid-connect/token
-
-# PRE:  https://api.pre.dena.eus/auth/realms/DenaAuthAdmins/protocol/openid-connect/token
-# PRO:  https://api.pro.dena.eus/auth/realms/DenaAuthAdmins/protocol/openid-connect/token
+POST /realms/DenaAuthAdmins/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 ```
 
@@ -24,23 +21,12 @@ Content-Type: application/x-www-form-urlencoded
 
 === "Ejemplo curl"
 
-    === ":material-test-tube: PRE"
-
-        ```bash
-        curl -X POST \
-          https://api.pre.dena.eus/auth/realms/DenaAuthAdmins/protocol/openid-connect/token \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -d "grant_type=client_credentials&client_id=<your-client-id>&client_secret=<your-client-secret>"
-        ```
-
-    === ":material-rocket-launch: PRO"
-
-        ```bash
-        curl -X POST \
-          https://api.pro.dena.eus/auth/realms/DenaAuthAdmins/protocol/openid-connect/token \
-          -H "Content-Type: application/x-www-form-urlencoded" \
-          -d "grant_type=client_credentials&client_id=<your-client-id>&client_secret=<your-client-secret>"
-        ```
+    ```bash
+    curl -X POST \
+      https://<keycloak-host>/realms/DenaAuthAdmins/protocol/openid-connect/token \
+      -H "Content-Type: application/x-www-form-urlencoded" \
+      -d "grant_type=client_credentials&client_id=<your-client-id>&client_secret=<your-client-secret>"
+    ```
 
 === "Ejemplo form body"
 

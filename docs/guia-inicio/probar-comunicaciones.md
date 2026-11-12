@@ -76,8 +76,8 @@ server:
 dena:
   admin: "NombreDeTuAdministracion" # (1)!
   url:
-    pre: "https://api.pre.dena.eus/conx-test/api/hello"
-    pro: "https://api.pro.dena.eus/conx-test/api/hello"
+    pre: "https://api-batera.pre.dena.eus/conx-test/api/hello"
+    pro: "https://api-batera.pro.dena.eus/conx-test/api/hello"
   conx-test:
     greeting: "Hello %s, welcome to DENA standard!"
     timeout: 10
@@ -89,8 +89,8 @@ dena:
 
     | Entorno | Desde Internet | Desde Euskalsarea |
     |---|---|---|
-    | **PRE** | `https://api.pre.dena.eus/conx-test/api/hello` | `https://api.pre.batera.euskalsarea.eus/conx-test/api/hello` |
-    | **PRO** | `https://api.pro.dena.eus/conx-test/api/hello` | `https://api.pro.batera.euskalsarea.eus/conx-test/api/hello` |
+    | **PRE** | `https://api-batera.pre.dena.eus/conx-test/api/hello` | `https://api-batera.pre.batera.euskalsarea.eus/conx-test/api/hello` |
+    | **PRO** | `https://api-batera.pro.dena.eus/conx-test/api/hello` | `https://api-batera.pro.batera.euskalsarea.eus/conx-test/api/hello` |
 
 ---
 
@@ -165,7 +165,7 @@ curl http://localhost:8082/api/hello
     **Solución:**
 
     - Verificar reglas de firewall hacia los endpoints DENA
-    - Probar con `telnet api.pre.dena.eus 443`
+    - Probar con `telnet api-batera.pre.dena.eus 443`
     - Si usas proxy, configurar las variables `http_proxy` / `https_proxy`
 
 ??? question "SSL handshake error"

@@ -19,7 +19,7 @@ Authorization: Bearer <token> (si OAuth está configurado)
 {
   "context": {
     "messageType": "PERSON_FETCH_DATA",
-    "dataType": { "dataTypeId": "ADMINISTRATIVE_RECORD" },
+    "dataType": { "dataTypeId": "RECORDS" },
     "messageCorrelationId": "550e8400-e29b-41d4-a716-446655440000",
     "flowDirection": "REQUEST",
     "originPartyId": "DENA-CORE",
@@ -27,10 +27,10 @@ Authorization: Bearer <token> (si OAuth está configurado)
     "subjectPerson": { "personId": "12345678A" },
     "administration": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
     "interopRouteData": [
-      { "denaComponentId": "apiGateway", "timestamp": "2026-06-01T10:00:00Z" }
+      { "denaComponentId": "apiGateway", "timestamp": "2024-06-01T10:00:00Z" }
     ]
   },
-  "consentOid": "CONSENT-OID-2026-001",
+  "consentOid": "CONSENT-OID-2024-001",
   "protocol": {
     "urls": [],
     "timeOut": "30s"
@@ -44,57 +44,35 @@ Authorization: Bearer <token> (si OAuth está configurado)
 | Campo | Obligatorio | Descripción |
 |-------|:-----------:|-------------|
 | `context.messageType` | ✅ | Tipo de mensaje (`PERSON_FETCH_DATA`). Ver [`DN00InteropMessageType`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/context/DN00InteropMessageType.java) |
-| `context.dataType.dataTypeId` | ✅ | Tipo de dato. Ver tabla de tipos abajo |
-| `context.messageCorrelationId` | ✅ | UUID de correlación para trazabilidad |
-| `context.flowDirection` | ✅ | `REQUEST` |
-| `context.originPartyId` | ❌ | Identificador del origen (ej: `DENA-CORE`) |
-| `context.destinationPartyId` | ❌ | Identificador del destino (ej: `ADMIN-001`) |
-| `context.subjectPerson.personId` | ✅ | DNI/NIE/NIF de la persona |
-| `context.administration.administrationId` | ❌ | Identificador de la administración |
-| `context.administration.dir3Code` | ❌ | Código DIR3 |
-| `context.interopRouteData` | ❌ | Traza de componentes DENA |
-| `consentOid` | ❌ | OID del consentimiento otorgado |
-| `protocol.urls` | ❌ | URLs de plantilla del protocolo |
-| `protocol.timeOut` | ❌ | Timeout (ej: `"30s"`) |
+| `context.dataType.dataTypeId` | ✅ | Tipo de dato: `RECORDS`, `NOTICES`, `REGISTRY`, `PAYMENTS`, `SCHEDULE`. Ver [`DN00DataTypeEnum`]({{ repos.common_data_api_blob }}/denaCommonDataAPIModelClasses/src/main/java/dena/api/data/model/DN00DataTypeEnum.java) |
+| `context.messageCorrelationId` | ✅ | UUID de correlación para trazabilidad. Ver [`DN00InteropContext`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/context/DN00InteropContext.java) |
+| `context.flowDirection` | ✅ | Dirección del flujo: `REQUEST`. Ver [`DN00InteropFlowDirection`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/context/DN00InteropFlowDirection.java) |
+| `context.originPartyId` | ❌ | Identificador del origen (ej: `DENA-CORE`). Ver [`DN00InteropContext`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/context/DN00InteropContext.java) |
+| `context.destinationPartyId` | ❌ | Identificador del destino (ej: `ADMIN-001`). Ver [`DN00InteropContext`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/context/DN00InteropContext.java) |
+| `context.subjectPerson.personId` | ✅ | DNI/NIE/NIF de la persona. Ver [`DN00InteropContext`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/context/DN00InteropContext.java) |
+| `context.administration.administrationId` | ❌ | Identificador de la administración. Ver [`DN00InteropContext`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/context/DN00InteropContext.java) |
+| `context.administration.dir3Code` | ❌ | Código DIR3. Ver [`DN00InteropContext`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/context/DN00InteropContext.java) |
+| `context.interopRouteData` | ❌ | Traza de componentes DENA. Ver [`DN00IteropRouteDataItem`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/context/DN00IteropRouteDataItem.java) |
+| `consentOid` | ❌ | OID del consentimiento otorgado. Ver [`DN00InteropMessageBase`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/DN00InteropMessageBase.java) |
+| `protocol.urls` | ❌ | URLs de plantilla del protocolo. Ver [`DN00InteropProtocol`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/protocol/DN00InteropProtocol.java) |
+| `protocol.timeOut` | ❌ | Timeout (ej: `"30s"`). Ver [`DN00InteropProtocol`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/protocol/DN00InteropProtocol.java) |
 | `data` | ✅ | Payload de la petición |
-
-### Valores de `dataTypeId`
-
-| Valor | Tipo de dato |
-|-------|-------------|
-| `ADMINISTRATIVE_RECORD` | Expediente administrativo |
-| `ADMINISTRATIVE_NOTICE` | Notificación administrativa |
-| `ADMINISTRATIVE_LEDGER` | Libro de registro (entrada/salida) |
-| `PAYMENT_ONE_OFF_PAYMENT` | Pago único |
-| `PAYMENT_DIRECT_DEBIT_PAYMENT` | Domiciliación bancaria |
-| `SCHEDULE` | Cita / elemento de agenda |
-| `PERSON_DATA` | Datos de persona |
-| `PERSON_CREDENTIAL` | Credencial / carné |
-| `PERSON_CREDENTIAL_FOR_BASQUE_LANGUAGE_DEGREE` | Acreditación de euskera |
-| `ECONOMIC_BENEFIT` | Prestación económica |
-| `ADMINISTRATIVE_PERSON_REGISTER` | Inscripción en registro |
-| `ADMINISTRATIVE_PERSON_REGISTER_FOR_HOUSING_PEV` | Inscripción vivienda PEV |
-| `ADMINISTRATIVE_PERSON_REGISTER_FOR_LAST_WILL` | Últimas voluntades |
-| `ADMINISTRATIVE_PERSON_REGISTER_FOR_REVISION_PEV` | Revisión PEV |
-| `PERSON_ENROLLMENT` | Matrícula |
-| `PERSON_ACADEMIC_ENROLLMENT` | Matrícula académica |
-| `PERSON_MEDICAL_DATA` | Datos médicos |
 
 ---
 
 ## Response exitosa (HTTP 200)
 
-> Clases Java: [`DN00PersonFetchInteropResponse`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/person/client/fetch/response/DN00PersonFetchInteropResponse.java)
+> Clases Java: [`DN00PersonFetchInteropResponse`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/person/client/fetch/response/DN00PersonFetchInteropResponse.java) · [`DN00PersonFetchData`]({{ repos.common_interop_api_blob }}/denaCommonInteropAPIModelClasses/src/main/java/dena/api/common/model/interop/person/client/fetch/response/DN00PersonFetchData.java)
 
 ```json
 {
   "context": {
     "messageType": "PERSON_FETCH_DATA",
-    "dataType": { "dataTypeId": "ADMINISTRATIVE_RECORD" },
+    "dataType": { "dataTypeId": "RECORDS" },
     "messageCorrelationId": "550e8400-e29b-41d4-a716-446655440000",
     "flowDirection": "RESPONSE",
     "subjectPerson": { "personId": "12345678A" },
-    "administration": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" }
+    "administration": { "administrationId": "ADMIN-001" }
   },
   "data": {
     "dataItems": [
@@ -110,28 +88,18 @@ Authorization: Bearer <token> (si OAuth está configurado)
           "serviceNameByLanguage": { "SPANISH": "Solicitud de licencia de apertura", "BASQUE": "Irekiera-lizentzia eskaera" },
           "originRef": { "id": "PROC-LIC-APER" }
         },
-        "applicationData": {
-          "applicationDate": "2024-03-14T09:00:00Z"
+        "createdAt": "2024-03-15T10:30:00Z",
+        "lastUpdatedAt": "2024-06-01T14:00:00Z",
+        "applicationDate": "2024-03-14T09:00:00Z",
+        "regNumber": "REG-2024-00123",
+        "interested": { "partyId": "12345678A", "partyName": "Juan García" },
+        "state": {
+          "stateCode": "IN_PROGRESS",
+          "description": { "SPANISH": "En tramitación", "BASQUE": "Izapidetzen" }
         },
-        "recordData": {
-          "createdAt": "2024-03-15T10:30:00Z",
-          "lastModifiedAt": "2024-06-01T14:00:00Z",
-          "state": {
-            "stateCode": "IN_PROGRESS",
-            "description": { "SPANISH": "En tramitación", "BASQUE": "Izapidetzen" }
-          },
-          "interestedParty": {
-            "personId": "12345678A",
-            "displayName": "Juan García"
-          }
-        },
-        "descriptionByLanguage": { "SPANISH": "Licencia de apertura de actividad", "BASQUE": "Irekiera-lizentzia" },
         "urls": [
-          { "url": "https://sede.miadmin.eus/expediente/EXP-2024-00123", "language": "SPANISH", "tags": ["default"] },
-          { "url": "https://egoitza.miadmin.eus/espedientea/EXP-2024-00123", "language": "BASQUE", "tags": ["default"] }
-        ],
-        "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-        "aboutPersonRef": { "personId": "12345678A" }
+          { "url": "https://sede.miadmin.eus/expediente/EXP-2024-00123", "language": "SPANISH", "tags": ["default"] }
+        ]
       }
     ]
   },
@@ -147,7 +115,7 @@ Authorization: Bearer <token> (si OAuth está configurado)
 {
   "context": {
     "messageType": "PERSON_FETCH_DATA",
-    "dataType": { "dataTypeId": "ADMINISTRATIVE_RECORD" },
+    "dataType": { "dataTypeId": "RECORDS" },
     "messageCorrelationId": "550e8400-e29b-41d4-a716-446655440000",
     "flowDirection": "RESPONSE",
     "subjectPerson": { "personId": "12345678A" }
@@ -187,185 +155,77 @@ Authorization: Bearer <token> (si OAuth está configurado)
 
 ## Tipos de objeto en `dataItems`
 
-| `type` (discriminador) | `dataTypeId` | Documentación |
-|------------------------|--------------|---------------|
-| `administrativeServiceProcedureRecord` | `ADMINISTRATIVE_RECORD` | [expediente.md](./data/expediente.md) |
-| `administrativeNotice` | `ADMINISTRATIVE_NOTICE` | [notificacion.md](./data/notificacion.md) |
-| `administrativeLedger` | `ADMINISTRATIVE_LEDGER` | [libro-registro.md](./data/libro-registro.md) |
-| `oneOffPayment` | `PAYMENT_ONE_OFF_PAYMENT` | [pago.md](./data/pago.md) |
-| `directDebitPayment` | `PAYMENT_DIRECT_DEBIT_PAYMENT` | [pago.md](./data/pago.md) |
-| `scheduleItem` | `SCHEDULE` | [cita.md](./data/cita.md) |
-| `personData` | `PERSON_DATA` | [persona.md](./data/persona.md) |
-| `personCredential` | `PERSON_CREDENTIAL` | [credencial.md](./data/credencial.md) |
-| `personCredentialForBasqueLanguageDegree` | `PERSON_CREDENTIAL_FOR_BASQUE_LANGUAGE_DEGREE` | [credencial.md](./data/credencial.md) |
-| `economicBenefit` | `ECONOMIC_BENEFIT` | [prestacion-economica.md](./data/prestacion-economica.md) |
-| `administrativePersonRegister` | `ADMINISTRATIVE_PERSON_REGISTER` | [inscripcion-registro.md](./data/inscripcion-registro.md) |
-| `administrativePersonRegisterForHousingPEV` | `ADMINISTRATIVE_PERSON_REGISTER_FOR_HOUSING_PEV` | [inscripcion-registro.md](./data/inscripcion-registro.md) |
-| `administrativePersonRegisterForLastWill` | `ADMINISTRATIVE_PERSON_REGISTER_FOR_LAST_WILL` | [inscripcion-registro.md](./data/inscripcion-registro.md) |
-| `administrativePersonRegisterForRevisionPEV` | `ADMINISTRATIVE_PERSON_REGISTER_FOR_REVISION_PEV` | [inscripcion-registro.md](./data/inscripcion-registro.md) |
-| `personEnrollment` | `PERSON_ENROLLMENT` | [matricula.md](./data/matricula.md) |
-| `personAcademicEnrollment` | `PERSON_ACADEMIC_ENROLLMENT` | [matricula.md](./data/matricula.md) |
-| `personMedicalData` | `PERSON_MEDICAL_DATA` | [datos-medicos.md](./data/datos-medicos.md) |
+Cada elemento del array `dataItems` es un objeto que hereda los [campos comunes](./data/campos-comunes.md) (`oid`, `id`, `urls`, `originAdminRef`, `aboutPersonRef`) y añade campos específicos según su tipo:
+
+| `type` | Objeto | Documentación |
+|--------|--------|---------------|
+| `administrativeServiceProcedureRecord` | Expediente | [expediente.md](./data/expediente.md) |
+| `administrativeNotice` | Notificación | [notificacion.md](./data/notificacion.md) |
+| `administrativeOfficialRegisterRecord` | Registro oficial | [registro-oficial.md](./data/registro-oficial.md) |
+| `oneOffPayment` | Pago único | [pago.md](./data/pago.md) |
+| `directDebitPayment` | Domiciliación | [pago.md](./data/pago.md) |
+| `scheduleItem` | Cita | [cita.md](./data/cita.md) |
+
+Objetos auxiliares referenciados:
+
+| Objeto | Documentación |
+|--------|---------------|
+| Servicio / Procedimiento | [servicio-administrativo.md](./data/servicio-administrativo.md) |
+| Unidad Orgánica | [unidad-organica.md](./data/unidad-organica.md) |
+| Campos comunes (base) | [campos-comunes.md](./data/campos-comunes.md) |
 
 ---
 
-## Ejemplos por tipo de dato
-
-### Expediente (`ADMINISTRATIVE_RECORD`)
+## Ejemplo — Notificación
 
 ```json
 {
-  "type": "administrativeServiceProcedureRecord",
-  "oid": "EXP-OID-001",
-  "id": "EXP-2024-00123",
-  "service": {
-    "serviceNameByLanguage": { "SPANISH": "Licencias de actividad", "BASQUE": "Jarduera-lizentziak" },
-    "originRef": { "id": "SRV-LIC-ACT" }
-  },
-  "procedure": {
-    "serviceNameByLanguage": { "SPANISH": "Solicitud de licencia de apertura", "BASQUE": "Irekiera-lizentzia eskaera" },
-    "originRef": { "id": "PROC-LIC-APER" }
-  },
-  "applicationData": { "applicationDate": "2024-03-14T09:00:00Z" },
-  "recordData": {
-    "createdAt": "2024-03-15T10:30:00Z",
-    "lastModifiedAt": "2024-06-01T14:00:00Z",
-    "state": { "stateCode": "IN_PROGRESS", "description": { "SPANISH": "En tramitación", "BASQUE": "Izapidetzen" } },
-    "interestedParty": { "personId": "12345678A", "displayName": "Juan García" }
-  },
-  "descriptionByLanguage": { "SPANISH": "Licencia de apertura de actividad", "BASQUE": "Irekiera-lizentzia" },
-  "urls": [
-    { "url": "https://sede.miadmin.eus/expediente/EXP-2024-00123", "language": "SPANISH", "tags": ["default"] },
-    { "url": "https://egoitza.miadmin.eus/espedientea/EXP-2024-00123", "language": "BASQUE", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
-}
-```
-
-### Notificación (`ADMINISTRATIVE_NOTICE`)
-
-```json
-{
-  "type": "administrativeNotice",
+  "type": "OFFICIAL_NOTICE",
   "oid": "NOT-OID-001",
   "id": "NOT-2024-00456",
-  "noticeType": "OFFICIAL_NOTICE",
+  "procedureRecord": { "oid": "EXP-OID-001", "id": "EXP-2024-00123" },
   "issuedAt": "2024-05-20T09:00:00Z",
-  "readAt": null,
-  "state": {
-    "stateCode": "PENDING_TO_BE_READ_BY_DESTINATION",
-    "description": { "SPANISH": "Pendiente de lectura", "BASQUE": "Irakurtzeko zain" }
-  },
-  "subjectByLanguage": {
-    "SPANISH": "Resolución de concesión de ayuda",
-    "BASQUE": "Laguntza emateko ebazpena"
-  },
-  "urls": [
-    { "url": "https://sede.miadmin.eus/notificacion/NOT-2024-00456", "language": "SPANISH", "tags": ["default"] },
-    { "url": "https://egoitza.miadmin.eus/jakinarazpena/NOT-2024-00456", "language": "BASQUE", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
+  "readedAt": null,
+  "state": "PENDING_TO_BE_READED_BY_DESTINATION",
+  "actSubjectByLanguage": { "SPANISH": "Resolución de concesión de ayuda", "BASQUE": "Laguntza emateko ebazpena" },
+  "urls": [{ "url": "https://sede.miadmin.eus/notificacion/NOT-2024-00456", "language": "SPANISH", "tags": ["default"] }]
 }
 ```
 
-### Libro de Registro (`ADMINISTRATIVE_LEDGER`)
-
-```json
-{
-  "type": "administrativeLedger",
-  "oid": "LED-OID-001",
-  "id": "LED-2024-00789",
-  "registeredAt": "2024-04-10T08:30:00Z",
-  "entryDirection": {
-    "stateCode": "ENTRY",
-    "description": { "SPANISH": "Entrada", "BASQUE": "Sarrera" }
-  },
-  "subjectByLanguage": {
-    "SPANISH": "Solicitud de licencia de obras",
-    "BASQUE": "Obra-lizentzia eskaera"
-  },
-  "urls": [
-    { "url": "https://sede.miadmin.eus/registro/LED-2024-00789", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
-}
-```
-
-### Pago único (`PAYMENT_ONE_OFF_PAYMENT`)
+## Ejemplo — Pago único
 
 ```json
 {
   "type": "oneOffPayment",
   "oid": "PAY-OID-001",
   "id": "PAY-2024-00321",
+  "procedureRecord": { "oid": "EXP-OID-001", "id": "EXP-2024-00123" },
   "paymentType": "ONE_OFF_PAYMENT",
-  "paymentSubjectByLanguage": {
-    "SPANISH": "Tasa por licencia de actividad",
-    "BASQUE": "Jarduera-lizentziaren tasa"
-  },
-  "amount": { "amount": 4550, "base": "CENTS", "currency": "EUR" },
-  "amountIfSurcharged": { "amount": 5005, "base": "CENTS", "currency": "EUR" },
-  "paymentDates": {
-    "issuedAt": "2024-05-01T00:00:00Z",
-    "dueDate": "2024-06-30T23:59:59Z",
-    "surchargedAt": "2024-07-01T00:00:00Z",
-    "surchargeDueDate": "2024-07-31T23:59:59Z",
-    "paidAt": null
-  },
-  "data": {
-    "code": "PENDING",
-    "medium": null,
-    "device": null,
-    "paymentProcessorId": null,
-    "paymentProcessorTransactionId": null,
-    "messageByLang": { "SPANISH": "Pendiente de pago", "BASQUE": "Ordaintzeke" }
-  },
-  "urls": [
-    { "url": "https://pago.miadmin.eus/pay/PAY-2024-00321", "language": "SPANISH", "tags": ["payment"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
+  "paymentSubjectByLanguage": { "SPANISH": "Tasa por licencia de actividad", "BASQUE": "Jarduera-lizentziaren tasa" },
+  "paymentDates": { "dueDate": "2024-06-30", "surchargedAt": "2024-07-15", "paidAt": null },
+  "format": "502",
+  "amount": { "amount": 45.50, "currency": "EUR" },
+  "amountIfSurcharged": { "amount": 50.05, "currency": "EUR" },
+  "data": { "forStatus": "PENDING", "at": null, "medium": null, "device": null },
+  "urls": [{ "url": "https://pago.miadmin.eus/pay/PAY-2024-00321", "language": "SPANISH", "tags": ["payment"] }]
 }
 ```
 
-### Domiciliación (`PAYMENT_DIRECT_DEBIT_PAYMENT`)
+## Ejemplo — Registro oficial
 
 ```json
 {
-  "type": "directDebitPayment",
-  "oid": "DD-OID-001",
-  "id": "DD-2024-00100",
-  "paymentType": "DIRECT_DEBIT",
-  "paymentSubjectByLanguage": {
-    "SPANISH": "Cuota mensual guardería",
-    "BASQUE": "Haur-eskolako hileko kuota"
-  },
-  "directDebitData": {
-    "setAt": "2024-01-15T00:00:00Z",
-    "expiresAt": null,
-    "frequency": "MONTHLY",
-    "medium": "ACCOUNT_TRANSFER",
-    "mediumHint": "ES91 **** **** **** 1332"
-  },
-  "nextChargeAt": "2024-07-01T00:00:00Z",
-  "nextChargeAmountInEuro": 120.00,
-  "paymentStatus": "ACTIVE",
-  "history": [
-    { "at": "2024-06-01T00:00:00Z", "amountInEuro": 120.00 },
-    { "at": "2024-05-01T00:00:00Z", "amountInEuro": 120.00 }
-  ],
-  "urls": [
-    { "url": "https://sede.miadmin.eus/domiciliacion/DD-2024-00100", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
+  "type": "administrativeOfficialRegisterRecord",
+  "oid": "REG-OID-001",
+  "id": "REG-2024-00789",
+  "procedureRecord": { "oid": "EXP-OID-001", "id": "EXP-2024-00123" },
+  "registeredAt": "2024-04-10T08:30:00Z",
+  "subjectByLanguage": { "SPANISH": "Solicitud de licencia de obras", "BASQUE": "Obra-lizentzia eskaera" },
+  "state": { "stateCode": "PRESENTED", "description": { "SPANISH": "Presentado", "BASQUE": "Aurkeztua" } }
 }
 ```
 
-### Cita (`SCHEDULE`)
+## Ejemplo — Cita
 
 ```json
 {
@@ -378,219 +238,41 @@ Authorization: Bearer <token> (si OAuth está configurado)
   "hourOfDay": 10,
   "minuteOfHour": 30,
   "durationMinutes": 30,
-  "priority": "MEDIUM",
-  "subjectByLanguage": {
-    "SPANISH": "Cita previa para renovación de DNI",
-    "BASQUE": "NAN berritzeko aurretiko hitzordua"
-  },
-  "urls": [
-    { "url": "https://sede.miadmin.eus/cita/CITA-2024-00050", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
+  "priority": "NORMAL",
+  "subject": { "SPANISH": "Cita previa para renovación de DNI", "BASQUE": "NAN berritzeko aurretiko hitzordua" },
+  "location": {
+    "country": { "id": "ES", "name": "España" },
+    "administrativeAreaLevel1": { "id": "PV", "name": "País Vasco" },
+    "administrativeAreaLevel3": { "id": "48020", "name": "Bilbao" },
+    "zipCode": "48001",
+    "address": "Gran Vía 50, Bilbao"
+  }
 }
 ```
 
-### Credencial (`PERSON_CREDENTIAL`)
+## Ejemplo — Domiciliación
 
 ```json
 {
-  "type": "personCredential",
-  "oid": "CRED-OID-001",
-  "id": "CRED-2024-00001",
-  "subjectByLanguage": {
-    "SPANISH": "Carné joven europeo",
-    "BASQUE": "Gazte txartel europarra"
+  "type": "directDebitPayment",
+  "oid": "DD-OID-001",
+  "id": "DD-2024-00100",
+  "procedureRecord": { "oid": "EXP-OID-001", "id": "EXP-2024-00123" },
+  "paymentType": "DIRECT_DEBIT",
+  "paymentSubjectByLanguage": { "SPANISH": "Cuota mensual guardería", "BASQUE": "Haur-eskolako hileko kuota" },
+  "directDebitData": {
+    "startDate": "2024-01-15",
+    "expiresAt": null,
+    "frequency": "MONTHLY",
+    "medium": "DIRECT_DEBIT",
+    "mediumHint": "2100 ***** 051332"
   },
-  "issuedAt": "2024-01-15T00:00:00Z",
-  "expiresAt": "2026-01-15T00:00:00Z",
-  "state": {
-    "stateCode": "VALID",
-    "description": { "SPANISH": "Vigente", "BASQUE": "Indarrean" }
-  },
-  "urls": [
-    { "url": "https://sede.miadmin.eus/credencial/CRED-2024-00001", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
-}
-```
-
-### Acreditación de euskera (`PERSON_CREDENTIAL_FOR_BASQUE_LANGUAGE_DEGREE`)
-
-```json
-{
-  "type": "personCredentialForBasqueLanguageDegree",
-  "oid": "EUS-OID-001",
-  "id": "EUS-B2-2024-001",
-  "subjectByLanguage": {
-    "SPANISH": "Título B2 de euskera",
-    "BASQUE": "Euskarako B2 titulua"
-  },
-  "issuedAt": "2024-06-01T00:00:00Z",
-  "expiresAt": null,
-  "state": {
-    "stateCode": "VALID",
-    "description": { "SPANISH": "Vigente", "BASQUE": "Indarrean" }
-  },
-  "CEFRTier": "B2",
-  "certifyingEntityByLanguage": {
-    "SPANISH": "HABE",
-    "BASQUE": "HABE"
-  },
-  "urls": [
-    { "url": "https://sede.miadmin.eus/credencial/EUS-B2-2024-001", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
-}
-```
-
-### Prestación económica (`ECONOMIC_BENEFIT`)
-
-```json
-{
-  "type": "economicBenefit",
-  "oid": "BEN-OID-001",
-  "id": "BEN-PEV-2024-001",
-  "amount": { "amount": 150000, "base": "CENTS", "currency": "EUR" },
-  "paymentOrderedAt": "2024-05-01T00:00:00Z",
-  "state": {
-    "stateCode": "GRANTED",
-    "description": { "SPANISH": "Concedida", "BASQUE": "Emandakoa" }
-  },
-  "medium": "ACCOUNT_TRANSFER",
-  "mediumHint": "ES91 **** **** **** 1332",
-  "urls": [
-    { "url": "https://sede.miadmin.eus/prestacion/BEN-PEV-2024-001", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
-}
-```
-
-### Inscripción en registro (`ADMINISTRATIVE_PERSON_REGISTER`)
-
-```json
-{
-  "type": "administrativePersonRegister",
-  "oid": "REG-OID-001",
-  "id": "REG-2024-00001",
-  "registeredAt": "2024-03-01T00:00:00Z",
-  "expiresAt": "2025-03-01T00:00:00Z",
-  "state": {
-    "stateCode": "REGISTERED",
-    "description": { "SPANISH": "Inscrito", "BASQUE": "Inskribatua" }
-  },
-  "urls": [
-    { "url": "https://sede.miadmin.eus/registro/REG-2024-00001", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
-}
-```
-
-### Revisión PEV (`ADMINISTRATIVE_PERSON_REGISTER_FOR_REVISION_PEV`)
-
-```json
-{
-  "type": "administrativePersonRegisterForRevisionPEV",
-  "oid": "RPEV-OID-001",
-  "id": "RPEV-2024-001",
-  "registeredAt": "2024-01-15T00:00:00Z",
-  "expiresAt": "2025-01-15T00:00:00Z",
-  "state": {
-    "stateCode": "ACTIVE",
-    "description": { "SPANISH": "Activo", "BASQUE": "Aktibo" }
-  },
-  "startDate": "2024-06-01T00:00:00Z",
-  "endDate": "2024-09-01T00:00:00Z",
-  "urls": [],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
-}
-```
-
-### Matrícula (`PERSON_ENROLLMENT`)
-
-```json
-{
-  "type": "personEnrollment",
-  "oid": "ENR-OID-001",
-  "id": "ENR-2024-00001",
-  "registeredAt": "2024-09-01T00:00:00Z",
-  "subjectByLanguage": {
-    "SPANISH": "Programación Java avanzada",
-    "BASQUE": "Java programazio aurreratua"
-  },
-  "institutionNameByLanguage": {
-    "SPANISH": "Diputación Foral de Bizkaia",
-    "BASQUE": "Bizkaiko Foru Aldundia"
-  },
-  "state": {
-    "stateCode": "ENROLLED",
-    "description": { "SPANISH": "Matriculado/a", "BASQUE": "Matrikulatua" }
-  },
-  "urls": [
-    { "url": "https://sede.miadmin.eus/matricula/ENR-2024-00001", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
-}
-```
-
-### Matrícula académica (`PERSON_ACADEMIC_ENROLLMENT`)
-
-```json
-{
-  "type": "personAcademicEnrollment",
-  "oid": "ACENR-OID-001",
-  "id": "ACENR-2024-001",
-  "registeredAt": "2024-09-15T00:00:00Z",
-  "subjectByLanguage": {
-    "SPANISH": "Grado en Ingeniería Informática",
-    "BASQUE": "Informatika Ingeniaritzako Gradua"
-  },
-  "institutionNameByLanguage": {
-    "SPANISH": "Universidad del País Vasco / EHU",
-    "BASQUE": "Euskal Herriko Unibertsitatea / UPV"
-  },
-  "state": {
-    "stateCode": "ENROLLED",
-    "description": { "SPANISH": "Matriculado/a", "BASQUE": "Matrikulatua" }
-  },
-  "academicYear": 2024,
-  "levelByLanguage": {
-    "SPANISH": "3er curso",
-    "BASQUE": "3. maila"
-  },
-  "urls": [
-    { "url": "https://www.ehu.eus/matricula/ACENR-2024-001", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "ADMIN-001", "dir3Code": "EA0000001" },
-  "aboutPersonRef": { "personId": "12345678A" }
-}
-```
-
-### Datos médicos (`PERSON_MEDICAL_DATA`)
-
-```json
-{
-  "type": "personMedicalData",
-  "medicalPassId": "01234567890",
-  "medicalInsuranceId": "OSAKIDETZA-2024-001",
-  "doctorFullName": {
-    "name": "María",
-    "surname": "García López",
-    "surname2": null
-  },
-  "urls": [
-    { "url": "tel:+34600123456", "tags": ["phone"] },
-    { "url": "mailto:paciente@osakidetza.eus", "tags": ["email"] },
-    { "url": "https://osakidetza.eus/cita/12345678A", "language": "SPANISH", "tags": ["default"] }
-  ],
-  "originAdminRef": { "administrationId": "OSAKIDETZA", "dir3Code": "EA0017100" },
-  "aboutPersonRef": { "personId": "12345678A" }
+  "nextChargeAt": "2024-07-01",
+  "nextChargeAmountInEuro": 120.00,
+  "paymentStatus": "ACTIVE",
+  "history": [
+    { "at": "2024-06-01", "amountInEuro": 120.00 }
+  ]
 }
 ```
 
@@ -604,7 +286,7 @@ Si la administración requiere OAuth2, recibirá la cabecera:
 Authorization: Bearer <access_token>
 ```
 
-El token se obtiene automáticamente mediante client credentials. Ver [autenticación](../../../autenticacion/core-dena-administracion/index.md).
+El token se obtiene automáticamente mediante client credentials.
 
 ---
 
@@ -627,7 +309,7 @@ El token se obtiene automáticamente mediante client credentials. Ver [autentica
 1. Exponer un endpoint `POST` que acepte y devuelva `application/json`
 2. Interpretar `context.subjectPerson.personId` para identificar a la persona
 3. Interpretar `context.dataType.dataTypeId` para filtrar el tipo de datos
-4. Devolver los objetos en el formato del modelo semántico (ver tabla de tipos)
+4. Devolver los objetos en el formato del modelo semántico
 5. Incluir textos multiidioma (castellano y euskera como mínimo)
 6. Incluir URLs de acceso a la sede electrónica cuando sea posible
 7. Respetar los códigos HTTP estándar
@@ -641,19 +323,25 @@ El token se obtiene automáticamente mediante client credentials. Ver [autentica
 
 | Documento | Contenido |
 |-----------|----------|
-| [campos-comunes.md](./data/campos-comunes.md) | Campos heredados por todos los objetos |
+| [campos-comunes.md](./data/campos-comunes.md) | Campos heredados por todos los objetos (`oid`, `id`, `urls`, `originAdminRef`, `aboutPersonRef`) |
 | [expediente.md](./data/expediente.md) | Expediente administrativo |
-| [notificacion.md](./data/notificacion.md) | Notificación |
-| [libro-registro.md](./data/libro-registro.md) | Libro de Registro (Ledger) |
+| [notificacion.md](./data/notificacion.md) | Notificación / comunicación |
+| [registro-oficial.md](./data/registro-oficial.md) | Asiento registral |
 | [pago.md](./data/pago.md) | Pago único y domiciliación |
-| [cita.md](./data/cita.md) | Cita / agenda |
-| [credencial.md](./data/credencial.md) | Credencial y acreditación de euskera |
-| [prestacion-economica.md](./data/prestacion-economica.md) | Prestación económica |
-| [inscripcion-registro.md](./data/inscripcion-registro.md) | Inscripción en registro |
-| [matricula.md](./data/matricula.md) | Matrícula y matrícula académica |
-| [datos-medicos.md](./data/datos-medicos.md) | Datos médicos |
+| [cita.md](./data/cita.md) | Cita previa / elemento de agenda |
+| [servicio-administrativo.md](./data/servicio-administrativo.md) | Servicio y procedimiento |
+| [unidad-organica.md](./data/unidad-organica.md) | Unidad organizativa |
 | [validaciones.md](./validaciones.md) | Reglas de formato y validación |
 | [errores-troubleshooting.md](./errores-troubleshooting.md) | Guía de errores comunes |
+
+
+
+
+
+
+
+
+
 
 <!-- DENA-DOC-FOOTER -->
 ---
